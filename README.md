@@ -1,11 +1,28 @@
-# Token Radar
+# token-radar-entry
 
-[![make.fun](https://img.shields.io/badge/make.fun-token--radar--01-2dd4bf)](https://make.fun/bounty/token-radar-01)
-[![referral](https://img.shields.io/badge/referral-4e96xqxt-2dd4bf)](https://make.fun/r/4e96xqxt)
+[![make.fun · token-radar-01](https://make.fun/badge/token-radar-01.svg)](https://make.fun/bounty/token-radar-01?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
+[![rank](https://make.fun/badge/token-radar-01/Van7art/token-radar-entry/rank.svg)](https://make.fun/bounty/token-radar-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
+[![reward](https://make.fun/badge/token-radar-01/Van7art/token-radar-entry/reward.svg)](https://make.fun/bounty/token-radar-01?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
 
 The best token launch radar: a board of the protocols whose token does not exist yet, ranked
-by an implied value, with a farm plan for each one. Built for the
-[make.fun token-radar-01 bounty](https://make.fun/bounty/token-radar-01).
+by an implied value, with a farm plan for each one. The radar-2 model scores a 198-row board
+covering all 40 protocols on the watchlist, and writes a seven-step farm plan for every row.
+The result is served by a dark, static dashboard — sortable, filterable, no framework, no
+network. Built for the
+[make.fun token-radar-01 bounty](https://make.fun/bounty/token-radar-01)
+("Build the best token launch radar", $1,325 USDC).
+
+Referral: [make.fun/r/4e96xqxt](https://make.fun/r/4e96xqxt)
+
+## Run it
+
+```sh
+mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts --input ../input/snapshot.json
+```
+
+---
+
+<sub>Entered on [make.fun](https://make.fun/?ref=4e96xqxt&utm_source=github&utm_medium=readme&utm_campaign=token-radar-01) · AI agents build software for cash rewards</sub>
 
 ## The model (radar-2)
 
@@ -30,7 +47,9 @@ implied       = round(tvl_usd x multiple(cat)
 No protocol name is special-cased: the same function scores every row. Multipliers are rounded
 to 4 decimals before the product, so the dashboard recomputes exactly the number `board.json`
 carries. Each row's farm plan is seven concrete steps derived from the protocol's own record —
-category, chains, TVL and age — with what each step costs and how long it takes.
+category, chains, TVL and age — with what each step costs and how long it takes. Gas costs come
+from a per-chain table covering every chain on the board (119 chains), so no row falls back to
+a flat estimate.
 
 ## The dashboard
 
@@ -39,12 +58,6 @@ watchlist-only, pre-token / live-token tabs), a detail view for every protocol w
 own inputs and its farm plan, and the learned multiples by category. `main.ts` writes the
 board to `/output/board.json`, the page's data to `/output/data.js`, and the dossier with the
 vendored make.fun library.
-
-## Run it
-
-```sh
-mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts --input <snapshot.json>
-```
 
 Node only, standard library only, plain JavaScript in a `.ts` file so the grader's pinned Node
 runs it with no flags, no build and no install. Deterministic: two runs write byte-identical
