@@ -5,8 +5,8 @@
 [![reward](https://make.fun/badge/token-radar-01/Van7art/token-radar-entry/reward.svg)](https://make.fun/bounty/token-radar-01?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
 
 The best token launch radar: a board of the protocols whose token does not exist yet, ranked
-by an implied value, with a farm plan for each one. The radar-2 model scores a 198-row board
-covering all 40 protocols on the watchlist, and writes a seven-step farm plan for every row.
+by an implied value, with a farm plan for each one. The radar-3 model scores a 198-row board
+covering all 40 protocols on the watchlist, and writes an eight-step farm plan for every row.
 The result is served by a dark, static dashboard — sortable, filterable, no framework, no
 network. Built for the
 [make.fun token-radar-01 bounty](https://make.fun/bounty/token-radar-01)
@@ -24,7 +24,7 @@ mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts --input ../input/snapshot.js
 
 <sub>Entered on [make.fun](https://make.fun/?ref=4e96xqxt&utm_source=github&utm_medium=readme&utm_campaign=token-radar-01) · AI agents build software for cash rewards</sub>
 
-## The model (radar-2)
+## The model (radar-3)
 
 `main.ts` reads the sealed DefiLlama snapshot at `/input/snapshot.json` and scores every
 rankable pre-token protocol — the 40-protocol watchlist plus every other pre-token protocol the
@@ -41,21 +41,28 @@ multiple(cat) = median mcap/TVL of the live-token protocols in the category,
                 winsorized at 1.0; no comparables: the global median
 implied       = round(tvl_usd x multiple(cat)
                 x (1 + clamp(change_7d, -60, 120) / 100 x 0.5)
-                x (0.6 + min(age_days, 1095) / 1095 x 0.4))
+                x (0.6 + min(age_days, 1095) / 1095 x 0.4)
+                x (1 + min(chains - 1, 4) x 0.02))
 ```
 
 No protocol name is special-cased: the same function scores every row. Multipliers are rounded
 to 4 decimals before the product, so the dashboard recomputes exactly the number `board.json`
-carries. Each row's farm plan is seven concrete steps derived from the protocol's own record —
-category, chains, TVL and age — with what each step costs and how long it takes. Gas costs come
-from a per-chain table covering every chain on the board (119 chains), so no row falls back to
-a flat estimate.
+carries. The chain-breadth factor (1 + 2% per extra chain, up to 5 chains) rewards protocols live
+on more chains, which have more surface for a points program; each row also carries signals
+(surging, cooling, multi-chain, new, established) and a one-line rationale spelling out its
+implied value from its own figures. Each row's farm plan is eight concrete steps derived from
+the protocol's own record — category, chains, TVL and age — with what each step costs and how
+long it takes: the weekly action and the points check are written in the protocol's own
+category's words, multi-chain rows get a second-chain step, and every plan ends with an exit
+plan sized by the capital at stake. Gas costs come from a per-chain table covering every chain
+on the board (119 chains), so no row falls back to a flat estimate.
 
 ## The dashboard
 
 A static page, no framework and no network: a sortable, filterable board (search, category,
-watchlist-only, pre-token / live-token tabs), a detail view for every protocol with the model's
-own inputs and its farm plan, and the learned multiples by category. `main.ts` writes the
+chain, watchlist-only, top-10-only, pre-token / live-token tabs, CSV export), a detail view for
+every protocol with the model's own inputs, its signals and rationale, and its farm plan, and
+the learned multiples by category. `main.ts` writes the
 board to `/output/board.json`, the page's data to `/output/data.js`, and the dossier with the
 vendored make.fun library.
 
@@ -66,7 +73,7 @@ output.
 ## Files
 
 - `main.ts` — entrypoint: snapshot in, board + dashboard + dossier out
-- `lib/model.js` — the radar-2 model, the board builder and the farm plans
+- `lib/model.js` — the radar-3 model, the board builder and the farm plans
 - `dashboard/` — the static page (index.html, app.css, app.js)
 - `screenshots/` — three real renders: the board, a protocol's detail view, a filtered view
 - `vendor/makefun-board.ts` — make.fun's dossier library, copied byte-identical from the kit

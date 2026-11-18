@@ -193,3 +193,25 @@ td .name .sub { display: block; }
   .top { flex-direction: column; align-items: flex-start; }
   .top-meta { justify-content: flex-start; }
 }
+
+.signals{display:flex;flex-wrap:wrap;gap:4px}
+.sig{font-size:11px;padding:2px 7px;border-radius:999px;background:#1e293b;color:#a5b4fc;border:1px solid #334155;white-space:nowrap}
+.sig-surging{background:#14532d;color:#86efac;border-color:#166534}
+.sig-cooling{background:#450a0a;color:#fca5a5;border-color:#7f1d1d}
+.sig-multi-chain{background:#1e3a5f;color:#7dd3fc;border-color:#075985}
+.sig-new{background:#3b2f00;color:#fde047;border-color:#854d0e}
+.sig-established{background:#111827;color:#9ca3af;border-color:#374151}
+.rationale{margin:10px 0 0;font-size:13px;color:#cbd5e1;border-left:3px solid #f59e0b;padding-left:10px}
+
+.why{display:block;font-size:11px;color:#94a3b8;margin-top:2px}
+.button{cursor:pointer}
+.table-wrap table{border-collapse:separate;border-spacing:0}
+.table-wrap thead th{position:sticky;top:0;background:#0b1220;z-index:2;box-shadow:0 1px 0 #1e293b}
+.table-wrap tbody tr{transition:background .12s}
+.table-wrap tbody tr:hover{background:#16213a}
+.table-wrap tbody tr[data-selected="true"]{background:#1e293b;box-shadow:inset 3px 0 0 #f59e0b}
+.detail .equation{display:grid;grid-template-columns:1fr 1fr;gap:8px 20px}
+.detail .equation>div{display:flex;justify-content:space-between;border-bottom:1px solid #1e293b;padding:6px 0}
+.steps li{padding:10px 0;border-bottom:1px solid #1e293b}
+.steps li:last-child{border-bottom:0}
+.steps li b{display:block;margin-bottom:2px}
